@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# YOLO outputs
+runs/
+
+# Videos
+videos/
+
+# Large model weights
+*.pt
+
+# Dataset
+data/raw/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS
+.DS_Store
+
+# Runtime generated files
+runtime/
