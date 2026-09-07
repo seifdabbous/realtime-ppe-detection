@@ -251,6 +251,8 @@ Generated files default to `runtime/predictions/` and expire after 24 hours. Job
 
 `MONGO_ROOT_USERNAME` and `MONGO_ROOT_PASSWORD` configure the MongoDB container and both default to `admin` in Compose.
 
+`KAFKA_HOST_PORT`, `MONGO_HOST_PORT`, and `API_HOST_PORT` configure the ports published by Docker Compose and default to `9092`, `27017`, and `8000`. Change them in `.env` when another local project already uses a default port. Container-to-container traffic continues to use Kafka at `kafka:29092`, MongoDB at `mongodb:27017`, and the API at `backend:8000`.
+
 ### Frontend
 
 | Variable | Default | Description |
@@ -320,7 +322,8 @@ The files in `src/` are standalone integration helpers rather than a formal auto
 - **YOLO weights not found**: set `MODEL_PATH` to an existing `.pt` file. Weights are not stored in Git; if inference runs in Docker, make sure the file is present before the image is built and rebuild the backend.
 - **Video source cannot be opened**: verify `VIDEO_SOURCE` and confirm that OpenCV supports the file or camera source.
 - **No events in the dashboard**: start both consumers, then start the video producer. Kafka consumers use `auto_offset_reset="latest"`, so start them before publishing frames.
-- **Kafka connection errors**: use `kafka:9092` from Compose containers and `localhost:9092` only for a broker configured for host access.
+- **Kafka connection errors**: use `kafka:29092` from Compose containers and the configured `KAFKA_HOST_PORT` from host processes.
+- **A Docker port is already in use**: change the matching `KAFKA_HOST_PORT`, `MONGO_HOST_PORT`, or `API_HOST_PORT` value in `.env`, then recreate the stack.
 - **MongoDB authentication errors**: keep `MONGO_URL`, `MONGO_ROOT_USERNAME`, and `MONGO_ROOT_PASSWORD` consistent. Existing Docker volumes preserve the credentials used when they were first initialized.
 - **WebSocket disconnects immediately**: log in again and use a current token in the `token` query parameter.
 - **Uploaded video is queued forever after restart**: upload jobs are in memory and do not survive API restarts; submit the file again.
